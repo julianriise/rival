@@ -1,26 +1,21 @@
 <script>
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
-let username;
-const handleSubmit = async (event) => {
-  event.preventDefault();
-  await prisma.user.create({
-	data: {
-	  name: username,
-	  email: `${username}@example.com`,
-	},
-  });
-};
+  let name;
+
+  const handleSubmit = async () => {
+	fetch("/", {
+	  method: "POST",
+	  body: JSON.stringify({
+		name
+	  })
+	})
+	.then(res => res.json())
+	.then(res => console.log(res))
+	.catch(() => alert('Failed to submit'))
+  }
 </script>
 
 <h1>Register</h1>
-<form on:submit={handleSubmit}>
-  <div>
-	<div>
-	  <input id="username" name="username" type="text" bind:value={username} required placeholder="Username" />
-	</div>
-	<div>
-	  <button type="submit">Register</button>
-	</div>
-  </div>
+<form on:submit|preventDefault|stopPropagation={handleSubmit}>
+  <input bind:value={name} required />
+  <button type="submit">Submit</button>
 </form>
