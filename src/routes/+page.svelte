@@ -1,21 +1,21 @@
 <script>
-  let name;
-
-  const handleSubmit = async () => {
-	fetch("/", {
-	  method: "POST",
-	  body: JSON.stringify({
-		name
-	  })
-	})
-	.then(res => res.json())
-	.then(res => console.log(res))
-	.catch(() => alert('Failed to submit'))
-  }
+	import { onMount } from "svelte";
+	import { PrismaClient } from "@prisma/client";
+	const prisma = new PrismaClient();
+	let name;
+	
+	async function handleSubmit(event) {
+	  event.preventDefault();
+	  const user = await prisma.user.create({ data: { name } });
+	  console.log(user);
+	}
+	onMount(() => {
+	  name = "";
+	});
 </script>
 
 <h1>Register</h1>
-<form on:submit|preventDefault|stopPropagation={handleSubmit}>
-  <input bind:value={name} required />
+<form on:submit={handleSubmit}>
+  <input bind:value={name} />
   <button type="submit">Submit</button>
 </form>
