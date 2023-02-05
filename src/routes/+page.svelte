@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from "svelte";
-	import { PrismaClient } from "@prisma/client";
+	import { PrismaClient } from "@prisma/client/runtime";
 	const prisma = new PrismaClient();
 	let name;
 	
